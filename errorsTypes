@@ -50,3 +50,31 @@ errorHandler:
     Debug.Print "errorHandler " & Err.Description
 
 End Sub
+
+
+
+'On Error Resume Next
+Private Sub multipleErrors()
+
+    On Error Goto errorHandler
+    
+    Dim i As Long
+
+    For i = 1 To 3
+
+        'Generate type mismatch error
+        Error 13
+
+continue:
+    Next i
+
+done:
+    Exit Sub
+
+errorHandler:
+    Debug.Print i, Err.Description
+
+    'clear the error and return to the code
+    Resume Next
+
+End Sub
