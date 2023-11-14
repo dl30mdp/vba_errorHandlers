@@ -38,16 +38,16 @@ errorHandler:
     'clears error
     On Error GoTo -1
     
-    On Error GoTo errorHandler
+    On Error GoTo otherErrorHandler
 
     'generates "Application-defined" error
     Error (1034)
 
     Exit Sub
 
-errorHandlerOther:
+otherErrorHandler:
 
-    Debug.Print "errorHandler " & Err.Description
+    Debug.Print "otherErrorHandler " & Err.Description
 
 End Sub
 
