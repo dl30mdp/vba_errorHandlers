@@ -1,0 +1,52 @@
+'On Error GoTo [label]
+Public Sub errorHandler()
+
+    On Error GoTo errorHandler
+ 
+    Dim x As Long, y As Long
+ 
+    x = 6
+    y = 6 / 0
+    x = 7
+
+done:
+
+    Exit Sub
+  
+errorHandler:
+
+    MsgBox "The following error occurred: " & Err.Description
+ 
+End Sub
+
+
+
+'On Error GoTo -1
+Public Sub twoErrors()
+
+    On Error GoTo errorHandler
+        
+    'generate "type mismatch" error
+    Error (13)
+
+done:
+
+    Exit Sub
+
+errorHandler:
+
+    'clear error
+    On Error GoTo -1
+    
+    On Error GoTo errorHandler
+
+    'generate "Application-defined" error
+    Error (1034)
+
+    Exit Sub
+
+errorHandler:
+
+    Debug.Print "errorHandler " & Err.Description
+
+End Sub
