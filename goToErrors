@@ -1,4 +1,4 @@
-'On Error GoTo [label]
+'On Error GoTo [errorHandler]
 Public Sub errorHandler()
 
     On Error GoTo errorHandler
