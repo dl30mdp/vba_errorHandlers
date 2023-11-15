@@ -15,7 +15,8 @@ done:
   
 errorHandler:
 
-    MsgBox "The following error occurred: " & Err.Description
+    MsgBox "The following error has occurred: " & vbCrLf & vbCrLf & "Error Number:" & Err.Number & vbCrLf & _
+    "Error Description: " & Err.Description
  
 End Sub
 
@@ -47,7 +48,9 @@ errorHandler:
 
 otherErrorHandler:
 
-    Debug.Print "otherErrorHandler " & Err.Description
+    'Debug.Print "otherErrorHandler " & Err.Description
+    MsgBox "The following error has occurred: " & vbCrLf & vbCrLf & "Error Number:" & Err.Number & vbCrLf & _
+    "Error Description: " & Err.Description
 
 End Sub
 
@@ -72,7 +75,9 @@ done:
     Exit Sub
 
 errorHandler:
-    Debug.Print i, Err.Description
+    'Debug.Print i, Err.Description
+    MsgBox "The following error has occurred: " & vbCrLf & vbCrLf & "Error Number:" & Err.Number & vbCrLf & _
+    "Error Description: " & Err.Description
 
     'clear the error and return to the code
     Resume Next
