@@ -1,7 +1,36 @@
-'On Error GoTo [errorHandler]
+'''On Error GoTo 0 (default behavior of VBA)'''
 Public Sub errorHandler()
 
-    On Error GoTo errorHandler
+    'Stops at the line with the error and displays a message.
+    On Error GoTo 0 
+ 
+    Dim x As Long, y As Long
+ 
+    x = 6
+    y = 6 / 0
+    x = 7
+ 
+End Sub
+
+'''On Error Resume Next'''
+Public Sub errorHandler()
+
+    'Moves to next line. No error message is displayed.
+    On Error Resume Next
+    
+    Dim x As Long, y As Long
+    
+    x = 6
+    y = 6 / 0
+    x = 7
+
+End Sub
+
+'''On Error GoTo [errorHandler]'''
+Public Sub errorHandler()
+
+    'Moves to a specific line or label. No error message is displayed.
+    On Error GoTo errorHandler 
  
     Dim x As Long, y As Long
  
@@ -16,13 +45,11 @@ done:
 errorHandler:
 
     MsgBox "The following error has occurred: " & vbCrLf & vbCrLf & "Error Number:" & Err.Number & vbCrLf & _
-    "Error Description: " & Err.Description
+    "Error Description: " & Err.Description & vbCrLf & "Error Line: " & Erl
  
 End Sub
 
-
-
-'On Error GoTo -1
+'''On Error GoTo -1'''
 Public Sub twoErrors()
 
     On Error GoTo errorHandler
@@ -36,8 +63,8 @@ done:
 
 errorHandler:
 
-    'clears error
-    On Error GoTo -1
+    'Clears the current error.
+    On Error GoTo -1 
     
     On Error GoTo otherErrorHandler
 
@@ -50,13 +77,11 @@ otherErrorHandler:
 
     'Debug.Print "otherErrorHandler " & Err.Description
     MsgBox "The following error has occurred: " & vbCrLf & vbCrLf & "Error Number:" & Err.Number & vbCrLf & _
-    "Error Description: " & Err.Description
+    "Error Description: " & Err.Description & vbCrLf & "Error Line: " & Erl
 
 End Sub
 
-
-
-'On Error Resume Next
+'''Resume Next'''
 Private Sub multipleErrors()
 
     On Error Goto errorHandler
@@ -77,9 +102,39 @@ done:
 errorHandler:
     'Debug.Print i, Err.Description
     MsgBox "The following error has occurred: " & vbCrLf & vbCrLf & "Error Number:" & Err.Number & vbCrLf & _
-    "Error Description: " & Err.Description
+    "Error Description: " & Err.Description & vbCrLf & "Error Line: " & Erl
 
-    'clear the error and return to the code
+    'clear the error and return to the code right after the line where the error ocurred.
     Resume Next
 
+End Sub
+
+'''Err.Raise'''
+Private Sub errorRaise()
+    'Must be used "vbObjectError" with a number from 513 to 65535
+    Dim ERROR_INVALID_DATA As Long: ERROR_INVALID_DATA = vbObjectError + 513
+
+    On Error GoTo errorHandler:
+    
+    If Len(Sheet1.Range("A1")) <> 5 Then
+    
+        'Err.Raise Format: [error number], [error source], [error description]
+        Err.Raise ERROR_INVALID_DATA, "errorRaise", "The value in the cell A1 must have exactly 5 characters."
+        
+    End If
+    
+    ' continue on if cell has valid data
+    Dim id As String
+    id = Sheet1.Range("A1")
+    
+done:
+    
+    Exit Sub
+    
+errorHandler:
+
+    ' Err.Raise will send code to here
+    MsgBox "The following error has occurred: " & vbCrLf & vbCrLf & "Error Number:" & Err.Number & vbCrLf & _
+    "Error Description: " & Err.Description & vbCrLf & "Error Line: " & Erl
+    
 End Sub
